@@ -1,39 +1,110 @@
+import { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 
+interface Movie {
+  id: number;
+  title: string;
+  ageRating: string;
+  poster: string;
+  trailer?: string;
+  showtimes: string[];
+}
+
 const Index = () => {
-  const movies = [
+  const [showMainTrailer, setShowMainTrailer] = useState(false);
+  const [selectedTrailer, setSelectedTrailer] = useState<string | null>(null);
+  
+  const mainTrailer = "https://media.cinemabox.team/net/c5/movies/1000000000370/trailer-supermen-predseans-obsl-kuda-ukhodyat-papy.mp4";
+  
+  const movies: Movie[] = [
     {
       id: 1,
-      title: "Звездный Путь: Возрождение",
-      genre: "Фантастика",
-      duration: "142 мин",
-      rating: "16+",
-      poster: "/img/cd585e81-d0db-426b-963d-959ca6f14b41.jpg",
-      showtimes: ["10:00", "13:30", "17:00", "20:30"],
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      title: "Супермен предсеанс. обсл. & Куда уходят папы?",
+      ageRating: "12+",
+      poster: "https://cdn.poehali.dev/files/adc2d1df-01a4-4ede-a771-6685e66cbb9b.png",
+      trailer: "https://media.cinemabox.team/net/c5/movies/1000000000370/trailer-supermen-predseans-obsl-kuda-ukhodyat-papy.mp4",
+      showtimes: ["12:50", "14:00", "15:30", "16:45", "17:50", "20:00", "20:55", "22:10", "22:45", "23:55"]
     },
     {
       id: 2,
-      title: "Сердца в Огне",
-      genre: "Романтика",
-      duration: "118 мин", 
-      rating: "12+",
-      poster: "/img/aed345da-3f5c-45be-bed7-1c61ebd2596f.jpg",
-      showtimes: ["11:15", "14:45", "18:15", "21:45"],
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      title: "Мир Юрского периода: Возрождение предсеанс. обсл. & Куда уходят папы?",
+      ageRating: "12+",
+      poster: "https://cdn.poehali.dev/files/d0ffe680-038b-4b94-91dc-f4c026d8594f.png",
+      trailer: "https://media.cinemabox.team/net/c5/movies/1000000000372/trailer-mir-yurskogo-perioda-vozrozhdenie-predseans-obsl-kuda-ukhodyat-papy.mp4",
+      showtimes: ["14:00", "16:25", "19:15", "21:40", "23:30"]
     },
     {
       id: 3,
-      title: "Городские Легенды",
-      genre: "Триллер",
-      duration: "127 мин",
-      rating: "18+", 
-      poster: "/img/cd585e81-d0db-426b-963d-959ca6f14b41.jpg",
-      showtimes: ["12:00", "15:30", "19:00", "22:30"],
-      trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      title: "Как приручить дракона предсеанс. обсл. & Куда уходят папы?",
+      ageRating: "6+",
+      poster: "https://cdn.poehali.dev/files/c5c4f663-ace7-4daa-8f31-6eca6220a91f.png",
+      trailer: "https://media.cinemabox.team/net/c5/movies/1000000000363/trailer-kak-priruchit-drakona-predseans-obsl-kuda-ukhodyat-papy.mp4",
+      showtimes: ["13:55", "16:20", "18:10", "19:55", "21:55"]
+    },
+    {
+      id: 4,
+      title: "Лило и Стич предсеанс. обсл. & Куда уходят папы?",
+      ageRating: "6+",
+      poster: "https://cdn.poehali.dev/files/8dcb1d32-6109-4c87-8000-8ede200ccbb1.png",
+      trailer: "https://media.cinemabox.team/net/c5/movies/1000000000354/trailer-lilo-i-stich-predseans-obsl-kuda-ukhodyat-papy.mp4",
+      showtimes: ["12:50", "15:15", "19:40", "21:50"]
+    },
+    {
+      id: 5,
+      title: "Формула 1 предсеанс. обсл. & Куда уходят папы?",
+      ageRating: "16+",
+      poster: "https://cdn.poehali.dev/files/91b4d69f-dcc3-45c3-8503-39058a2384e8.png",
+      trailer: "https://media.cinemabox.team/net/c5/movies/1000000000369/trailer-formula-1-predseans-obsl-kuda-ukhodyat-papy.mp4",
+      showtimes: ["11:10", "16:10", "23:10"]
+    },
+    {
+      id: 6,
+      title: "Смурфики в кино предсеанс. обсл. & Куда уходят папы?",
+      ageRating: "6+",
+      poster: "/img/de4cac55-8988-4c39-9b49-5118c1e81432.jpg",
+      showtimes: ["10:05", "12:15", "17:20"]
+    },
+    {
+      id: 7,
+      title: "Материалистка",
+      ageRating: "18+",
+      poster: "/img/a8aeb44d-b352-4918-a00e-510d6b16013c.jpg",
+      trailer: "https://media.cinemabox.team/r/movies/12271/trailer-materialistka.mp4",
+      showtimes: ["14:30", "19:25"]
+    },
+    {
+      id: 8,
+      title: "Дюна 2 предсеанс. обсл. & Куда уходят папы?",
+      ageRating: "12+",
+      poster: "/img/ab4d371c-adad-4036-b151-ea05df18c251.jpg",
+      showtimes: ["19:45"]
+    },
+    {
+      id: 9,
+      title: "28 лет спустя предсеанс. обсл. & Куда уходят папы?",
+      ageRating: "18+",
+      poster: "/img/84e1ff13-a4ff-48f4-a53d-5c678e9aeaa3.jpg",
+      trailer: "https://media.cinemabox.team/net/c5/movies/1000000000368/trailer-28-let-spustya-predseans-obsl-kuda-ukhodyat-papy.mp4",
+      showtimes: ["23:05"]
+    },
+    {
+      id: 10,
+      title: "Плагиатор",
+      ageRating: "16+",
+      poster: "/img/d7e5416e-926d-4875-9ff7-cb5b043f06d8.jpg",
+      trailer: "https://media.cinemabox.team/net/c5/movies/12894/trailer-plagiator.mp4",
+      showtimes: ["20:10"]
+    },
+    {
+      id: 11,
+      title: "Пила Х",
+      ageRating: "18+",
+      poster: "/img/43da16e1-fd2e-4d12-80da-c7973adebafb.jpg",
+      trailer: "https://media.cinemabox.team/r/movies/10780/trailer-pila-x.mp4",
+      showtimes: ["20:35"]
     }
   ];
 
@@ -45,7 +116,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Icon name="Film" size={28} className="text-[#FF6B35]" />
-              <h1 className="text-2xl font-bold text-white">CINEMA</h1>
+              <h1 className="text-2xl font-bold text-white">Kinoimax</h1>
             </div>
             <nav className="hidden md:flex items-center space-x-8">
               <a href="#movies" className="text-gray-300 hover:text-[#FF6B35] transition-colors">Фильмы</a>
@@ -63,35 +134,32 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1E] via-[#1C1C1E]/50 to-transparent z-10"></div>
+      <section className="relative h-screen flex items-end overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
         <div className="absolute inset-0">
           <img 
-            src="/img/cd585e81-d0db-426b-963d-959ca6f14b41.jpg" 
-            alt="Hero movie poster"
-            className="w-full h-full object-cover opacity-30"
+            src="https://cdn.poehali.dev/files/adc2d1df-01a4-4ede-a771-6685e66cbb9b.png" 
+            alt="Супермен"
+            className="w-full h-full object-cover"
           />
         </div>
-        <div className="relative z-20 text-center max-w-4xl mx-auto px-6">
-          <Badge className="bg-[#FF6B35] text-white mb-6 text-lg px-4 py-2">
-            Премьера недели
-          </Badge>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            Звездный Путь:<br />Возрождение
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Эпическое космическое приключение, которое изменит представление о будущем человечества
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white px-8 py-4 text-lg">
-              <Icon name="Play" size={20} className="mr-2" />
-              Смотреть трейлер
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-[#1C1C1E] px-8 py-4 text-lg">
-              <Icon name="Ticket" size={20} className="mr-2" />
-              Купить билет
-            </Button>
+        <div className="relative z-20 mb-20 ml-8 text-white">
+          <div className="mb-4">
+            <Badge className="bg-red-600 text-white text-lg px-3 py-1 font-bold">
+              12+
+            </Badge>
           </div>
+          <h1 className="text-6xl font-bold mb-6">
+            Супермен в кино!
+          </h1>
+          <Button 
+            size="lg" 
+            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-xl font-semibold"
+            onClick={() => setShowMainTrailer(true)}
+          >
+            <Icon name="Play" size={24} className="mr-3" />
+            Смотреть трейлер
+          </Button>
         </div>
       </section>
 
@@ -116,27 +184,27 @@ const Index = () => {
                       />
                     </div>
                     <div className="lg:w-3/4 p-8">
-                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
-                        <div>
-                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{movie.title}</h3>
-                          <div className="flex flex-wrap items-center gap-4 text-gray-400">
-                            <span className="flex items-center">
-                              <Icon name="Tag" size={16} className="mr-1" />
-                              {movie.genre}
-                            </span>
-                            <span className="flex items-center">
-                              <Icon name="Clock" size={16} className="mr-1" />
-                              {movie.duration}
-                            </span>
-                            <Badge variant={movie.rating === "18+" ? "destructive" : movie.rating === "16+" ? "default" : "secondary"}>
-                              {movie.rating}
-                            </Badge>
-                          </div>
+                      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6">
+                        <div className="relative">
+                          <Badge className={`absolute -top-2 -left-2 ${
+                            movie.ageRating === "18+" ? "bg-red-600" : 
+                            movie.ageRating === "16+" ? "bg-orange-600" : 
+                            movie.ageRating === "12+" ? "bg-yellow-600" : "bg-green-600"
+                          } text-white font-bold`}>
+                            {movie.ageRating}
+                          </Badge>
+                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 pt-4">{movie.title}</h3>
                         </div>
-                        <Button variant="outline" className="border-[#FF6B35] text-[#FF6B35] hover:bg-[#FF6B35] hover:text-white mt-4 lg:mt-0">
-                          <Icon name="Play" size={16} className="mr-2" />
-                          Трейлер
-                        </Button>
+                        {movie.trailer && (
+                          <Button 
+                            variant="outline" 
+                            className="border-[#FF6B35] text-[#FF6B35] hover:bg-[#FF6B35] hover:text-white mt-4 lg:mt-0"
+                            onClick={() => setSelectedTrailer(movie.trailer!)}
+                          >
+                            <Icon name="Play" size={16} className="mr-2" />
+                            Трейлер
+                          </Button>
+                        )}
                       </div>
                       
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -179,22 +247,35 @@ const Index = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <Badge className={`absolute top-4 right-4 ${
-                      movie.rating === "18+" ? "bg-red-600" : 
-                      movie.rating === "16+" ? "bg-orange-600" : "bg-green-600"
+                      movie.ageRating === "18+" ? "bg-red-600" : 
+                      movie.ageRating === "16+" ? "bg-orange-600" : 
+                      movie.ageRating === "12+" ? "bg-yellow-600" : "bg-green-600"
                     }`}>
-                      {movie.rating}
+                      {movie.ageRating}
                     </Badge>
-                    <Button 
-                      size="sm" 
-                      className="absolute bottom-4 left-4 bg-[#FF6B35] hover:bg-[#FF6B35]/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0"
-                    >
-                      <Icon name="Play" size={16} className="mr-1" />
-                      Трейлер
-                    </Button>
+                    {movie.trailer && (
+                      <Button 
+                        size="sm" 
+                        className="absolute bottom-4 left-4 bg-[#FF6B35] hover:bg-[#FF6B35]/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0"
+                        onClick={() => setSelectedTrailer(movie.trailer!)}
+                      >
+                        <Icon name="Play" size={16} className="mr-1" />
+                        Трейлер
+                      </Button>
+                    )}
                   </div>
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-white mb-2">{movie.title}</h3>
-                    <p className="text-gray-400 mb-4">{movie.genre} • {movie.duration}</p>
+                    <div className="grid grid-cols-3 gap-2 mb-4">
+                      {movie.showtimes.slice(0, 6).map((time, index) => (
+                        <span 
+                          key={index}
+                          className="bg-gray-700 text-white px-2 py-1 rounded text-sm text-center hover:bg-[#FF6B35] transition-colors cursor-pointer"
+                        >
+                          {time}
+                        </span>
+                      ))}
+                    </div>
                     <Button className="w-full bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white">
                       Купить билет
                     </Button>
@@ -213,7 +294,7 @@ const Index = () => {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Icon name="Film" size={24} className="text-[#FF6B35]" />
-                <h3 className="text-xl font-bold">CINEMA</h3>
+                <h3 className="text-xl font-bold">Kinoimax</h3>
               </div>
               <p className="text-gray-400">Современный кинотеатр с лучшими фильмами и передовыми технологиями</p>
             </div>
@@ -254,10 +335,50 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 CINEMA. Все права защищены.</p>
+            <p>&copy; 2024 Kinoimax. Все права защищены.</p>
           </div>
         </div>
       </footer>
+
+      {/* Main Trailer Modal */}
+      {showMainTrailer && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-4xl">
+            <button
+              onClick={() => setShowMainTrailer(false)}
+              className="absolute -top-12 right-0 text-white hover:text-red-500 transition-colors"
+            >
+              <Icon name="X" size={32} />
+            </button>
+            <video 
+              src={mainTrailer} 
+              controls 
+              autoPlay
+              className="w-full rounded-lg"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Movie Trailer Modal */}
+      {selectedTrailer && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-4xl">
+            <button
+              onClick={() => setSelectedTrailer(null)}
+              className="absolute -top-12 right-0 text-white hover:text-red-500 transition-colors"
+            >
+              <Icon name="X" size={32} />
+            </button>
+            <video 
+              src={selectedTrailer} 
+              controls 
+              autoPlay
+              className="w-full rounded-lg"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
