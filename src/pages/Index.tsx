@@ -125,7 +125,6 @@ const Index = () => {
             </div>
             <nav className="hidden md:flex items-center space-x-8">
               <a href="#movies" className="text-gray-300 hover:text-[#FF6B35] transition-colors">Фильмы</a>
-              <a href="#schedule" className="text-gray-300 hover:text-[#FF6B35] transition-colors">Расписание сеансов</a>
               <a href="#about" className="text-gray-300 hover:text-[#FF6B35] transition-colors">О нас</a>
             </nav>
             <button className="md:hidden">
@@ -166,14 +165,7 @@ const Index = () => {
                 <span>Фантастика</span>
               </div>
               
-              <Button 
-                onClick={() => handleTrailerClick(movies[0].trailer)}
-                size="lg" 
-                className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white px-8 py-4 text-lg"
-              >
-                <Icon name="Play" size={20} className="mr-2" />
-                Посмотреть полный трейлер
-              </Button>
+
             </div>
           </div>
         </div>
@@ -191,13 +183,13 @@ const Index = () => {
             {movies.map((movie) => (
               <Card key={movie.id} className="bg-gray-800/30 border-gray-700 overflow-hidden group hover:scale-105 transition-all duration-300 hover:bg-gray-800/50">
                 <CardContent className="p-0">
-                  <div className="relative">
+                  <div className="relative cursor-pointer" onClick={() => handleTrailerClick(movie.trailer)}>
                     <img 
                       src={movie.poster} 
                       alt={movie.title}
-                      className="w-full h-96 object-cover"
+                      className="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <Badge className={`absolute top-4 right-4 ${
                       movie.rating === "18+" ? "bg-red-600" : 
                       movie.rating === "16+" ? "bg-orange-600" : 
@@ -205,6 +197,13 @@ const Index = () => {
                     }`}>
                       {movie.rating}
                     </Badge>
+                    
+                    {/* Play Button Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <div className="bg-[#FF6B35] rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                        <Icon name="Play" size={32} className="text-white ml-1" />
+                      </div>
+                    </div>
                   </div>
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-white mb-2">{movie.title}</h3>
@@ -217,85 +216,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Schedule Section with Trailers */}
-      <section id="schedule" className="py-20 bg-[#1C1C1E]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Расписание сеансов</h2>
-            <p className="text-xl text-gray-400">Выберите время и посмотрите трейлер</p>
-          </div>
-          
-          <div className="space-y-8">
-            {movies.slice(0, 3).map((movie) => (
-              <div key={movie.id} className="bg-gray-800/30 border border-gray-700 rounded-xl overflow-hidden">
-                <div className="flex flex-col lg:flex-row">
-                  <div className="lg:w-80 relative group">
-                    <img 
-                      src={movie.poster} 
-                      alt={movie.title}
-                      className="w-full h-64 lg:h-80 object-cover"
-                    />
-                    
-                    {/* Play Button */}
-                    <button 
-                      onClick={() => handleTrailerClick(movie.trailer)}
-                      className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-                    >
-                      <div className="bg-[#FF6B35] rounded-full p-6 transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                        <Icon name="Play" size={40} className="text-white ml-1" />
-                      </div>
-                    </button>
-                    
-                    <Badge className="absolute top-4 right-4 bg-[#FF6B35] text-white">
-                      Трейлер
-                    </Badge>
-                  </div>
-                  
-                  <div className="flex-1 p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-2xl font-bold text-white mb-2">{movie.title}</h3>
-                        <div className="flex items-center space-x-4 text-gray-400">
-                          <span className="flex items-center">
-                            <Icon name="Clock" size={16} className="mr-1" />
-                            {movie.duration}
-                          </span>
-                          <Badge className={movie.rating === "18+" ? "bg-red-600" : movie.rating === "16+" ? "bg-orange-600" : movie.rating === "12+" ? "bg-yellow-600" : "bg-green-600"}>
-                            {movie.rating}
-                          </Badge>
-                          <span>{movie.genre}</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                      {["10:00", "13:30", "17:00", "20:30"].map((time) => (
-                        <Button key={time} variant="outline" className="border-gray-600 text-gray-300 hover:bg-[#FF6B35] hover:border-[#FF6B35] hover:text-white">
-                          {time}
-                        </Button>
-                      ))}
-                    </div>
-                    
-                    <div className="flex space-x-4">
-                      <Button 
-                        onClick={() => handleTrailerClick(movie.trailer)}
-                        className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white"
-                      >
-                        <Icon name="Play" size={16} className="mr-2" />
-                        Смотреть трейлер
-                      </Button>
-                      <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-700">
-                        <Icon name="Ticket" size={16} className="mr-2" />
-                        Купить билет
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Trailer Modal */}
       <Dialog open={isTrailerOpen} onOpenChange={handleDialogClose}>
